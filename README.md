@@ -14,7 +14,7 @@ Configurations are stored in **configuration files** within your application, an
 
 This gives your application a consistent configuration interface shared among a growing list of npm modules also using node-config.
 
-**NOTE:** This project is more or less in pair with [`node-config`](https://github.com/lorenwest/node-config) implementation, with exception for some fluff that could be considered too much magic such as deployment specific *multi-instance deployments* which I so far haven't found any good motivation for, and some other questionable advanced features mentioned in the wiki pages. The main
+**NOTE:** This project is more or less in pair with [`node-config`](https://github.com/lorenwest/node-config) implementation, with exception for some fluff that could be considered too much magic such as deployment specific *multi-instance deployments* which I so far haven't found any good motivation for, and some other questionable advanced features mentioned in the wiki pages.
 
 
 ## Project Guidelines
