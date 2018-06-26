@@ -1,0 +1,6 @@
+a2:
+    b2:
+        -   PROD 1
+    b3:
+        c2: "PROD 2"
+some_key_only_for_prod: true
