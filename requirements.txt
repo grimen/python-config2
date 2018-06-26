@@ -1,0 +1,4 @@
+git+https://github.com/grimen/python-easypackage.git#egg=easypackage
+git+https://github.com/grimen/python-attributedict.git#egg=attributedict
+deepdiff
+pyyaml
