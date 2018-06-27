@@ -219,10 +219,10 @@ a2:
 from config2 import config
 
 config.get_env() # => None
-config.get() # => {'a1': 'x', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, c2: 'y'}}}
+config.get() # => {'a1': 'x', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'y'}}}
 
 config.a1 # => 'x'
-config.a2 # => {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, c2: 'y'}}
+config.a2 # => {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'y'}}
 config.a2.b3.c2 # => 'y'
 
 print('$$$')
