@@ -122,10 +122,10 @@ some_key_only_for_prod: true
 from config2 import config
 
 config.get_env() # => None
-config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, c2: 'DEFAULT 2'}}}
+config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'DEFAULT 2'}}}
 
 config.a1 # => 'DEFAULT 1'
-config.a2 # => {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, c2: 'DEFAULT 2'}}
+config.a2 # => {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'DEFAULT 2'}}
 config.a2.b3.c2 # => 'DEFAULT 2'
 
 print('$$$')
@@ -137,10 +137,10 @@ print('$$$')
 from config2 import config
 
 config.get_env() # => 'development'
-config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, c2: 'DEV 2'}}, 'some_key_only_for_dev': True}
+config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, 'c2': 'DEV 2'}}, 'some_key_only_for_dev': True}
 
 config.a1 # => 'DEFAULT 1'
-config.a2 # => {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, c2: 'DEV 2'}}
+config.a2 # => {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, 'c2': 'DEV 2'}}
 config.a2.b3.c2 # => 'DEV was here 2'
 config.some_key_only_for_dev # => True
 config.some_key_only_for_foo # => AttributeError
@@ -155,10 +155,10 @@ print('$$$')
 from config2 import config
 
 config.get_env() # => 'foo'
-config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, c2: 'FOO 2'}}, 'some_key_only_for_foo': True}
+config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, 'c2': 'FOO 2'}}, 'some_key_only_for_foo': True}
 
 config.a1 # => 'DEFAULT 1'
-config.a2 # => {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, c2: 'FOO 2'}}
+config.a2 # => {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, 'c2': 'FOO 2'}}
 config.a2.b3.c2 # => 'FOO was here 2'
 config.key_only_for_foo # => True
 config.some_key_only_for_dev # => AttributeError
@@ -173,10 +173,10 @@ print('$$$')
 from config2 import config
 
 config.get_env() # => 'production'
-config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, c2: 'PROD 2'}}, 'some_key_only_for_foo': True}
+config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, 'c2': 'PROD 2'}}, 'some_key_only_for_foo': True}
 
 config.a1 # => 'DEFAULT 1'
-config.a2 # => {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, c2: 'PROD 2'}}
+config.a2 # => {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, 'c2': 'PROD 2'}}
 config.a2.b3.c2 # => 'PROD was here 2'
 config.some_key_only_for_prod # => True
 config.some_key_only_for_dev # => AttributeError
