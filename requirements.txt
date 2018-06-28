@@ -1,4 +1,4 @@
 git+https://github.com/grimen/python-easypackage.git#egg=easypackage
 attributedict==0.1.6
-deepdiff
-pyyaml
+deepdiff==3.3.0
+pyyaml==3.12
