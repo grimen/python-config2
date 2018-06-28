@@ -18,9 +18,21 @@ clean:
 install:
 	pip install -r requirements.txt
 
+.PHONY: install-ci
+install-ci:
+	pip install -U setuptools tox tox-travis && \
+	pip install -r requirements.txt
+
 .PHONY: test
 test:
 	python ./$(NAME)/tests
+
+.PHONY: test-tox
+test-tox:
+	tox
+
+.PHONY: test-ci
+test-ci: test-tox
 
 .PHONY: testimport
 testimport:

@@ -13,7 +13,11 @@ import pprint
 import types
 
 from os import path, environ
-from colour_runner.result import ColourTextTestResult
+try:
+    # NOTE on `tox` (2/2): ran into issues with `tox` raising `ncurses` error, so disabling colors when running in `tox` for now
+    from colour_runner.result import ColourTextTestResult
+except:
+    pass
 from pygments import highlight, lexers, formatters
 
 from deepdiff import DeepDiff
@@ -91,7 +95,11 @@ def run(test):
 
     print('')
 
-    unittest.runner.TextTestRunner(verbosity = 2, resultclass = ColourTextTestResult).run(_suite)
+    # NOTE on `tox` (2/2): ran into issues with `tox` raising `ncurses` error, so disabling colors when running in `tox` for now
+    if 'ColourTextTestResult' in globals():
+        unittest.runner.TextTestRunner(verbosity = 2, resultclass = ColourTextTestResult).run(_suite)
+    else:
+        unittest.runner.TextTestRunner(verbosity = 2).run(_suite)
 
 def suite(root = DEFAULT_TEST_ROOT_PATH, pattern = DEFAULT_TEST_FILE_PATTERN):
     root = root or DEFAULT_TEST_ROOT_PATH

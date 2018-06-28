@@ -1,12 +1,12 @@
 
 import setuptools
 
-# DISABLED/BUG: this line fails when `pip install attributedict` but works `pip install .`
-# from attributedict import __version__
+# DISABLED/BUG: this line fails when `pip install config2` but works `pip install .`
+# from config2 import __version__
 
 setuptools.setup(
     name = 'config2',
-    version = '0.1.1',
+    version = '0.1.2',
     description = (
         'Python application configuration - highly inspired by `node-config`.'
     ),

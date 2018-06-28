@@ -231,11 +231,22 @@ print('$$$')
 
 ## Test
 
-Clone down source code and run:
+Clone down source code:
 
 ```sh
 $ make install
+```
+
+Run **colorful tests**, with only native environment (dependency sandboxing up to you):
+
+```sh
 $ make test
+```
+
+Run **less colorful tests**, with **multi-environment** (using **tox**):
+
+```sh
+$ make test-tox
 ```
 
 
