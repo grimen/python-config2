@@ -101,6 +101,11 @@ class Config(AttributeDict):
         detect = False,
         silent = True,
     ):
+        if isinstance(env, string_types):
+            if os.path.sep in env:
+                path = env
+                env = None
+
         env = env or DEFAULT_ENV
         path = path or os.getcwd()
 
@@ -153,8 +158,17 @@ class Config(AttributeDict):
 
         return result
 
+    def items(self):
+        return map(lambda key: (key, self.__dict__.get(key, None)), self.__dict__.keys())
+
+    def keys(self):
+        return self.__dict__.keys()
+
+    def values(self):
+        return map(lambda key: self.__dict__.get(key, None), self.__dict__.keys())
+
     def has(self, key):
-        return (key in self.keys())
+        return key in self.keys()
 
     def reload(self):
         try:
@@ -316,28 +330,47 @@ class Config(AttributeDict):
         return result_dict
 
     @staticmethod
-    def get_env(keys, default = None):
-        values = filter(lambda key: environ.get(key, None), keys)
-        values = filter(lambda key: key is not None, values)
-        value = len(values) and values[0]
-        value = value or default
+    def detect_env(keys, default = None):
+        # print(type(environment))
+        # for key in environment.keys():
+        #     print('detect_env', key, environ.get(key, None))
+        matching_keys = filter(lambda key: environ.get(key, None), keys)
+        matching_keys = filter(lambda key: key is not None, matching_keys)
+
+        matching_key = len(matching_keys) and matching_keys[0]
+        matching_key = matching_key or default
+
+        value = environ.get(matching_key, None)
 
         return value
 
     @staticmethod
-    def create(*dicts):
-        env = Config.get_env(environ)
+    def create(*args, **kvargs):
+        env = dict(enumerate(args)).get(0, None)
+        env = env or kvargs.get('env', None)
+        env = env or Config.detect_env(DEFAULT_ENV_KEYS, DEFAULT_ENV)
 
-        config = Config(env)
+        try:
+            del args[0]
+        except:
+            pass
+
+        try:
+            del kvargs['env']
+        except:
+            pass
+
+        config = Config(env, *args, **kvargs)
 
         return config
+
 
 # =========================================
 #       INSTANCES
 # --------------------------------------
 
 try:
-    config = Config.create(DEFAULT_ENV_KEYS)
+    config = Config.create()
 
 except Exception as error:
     pass

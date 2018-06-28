@@ -3,7 +3,7 @@
 #       DEPS
 # --------------------------------------
 
-from os import path
+from os import path, environ
 
 from easypackage.syspath import syspath
 
@@ -1208,7 +1208,7 @@ class TestCase(helper.TestCase):
         self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
 
     def test_config(self):
-        config = module.Config(path = helper.fixture_path('foo'))
+        config = module.Config(path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
             '__config_data__': config.__config_data__,
@@ -1237,7 +1237,7 @@ class TestCase(helper.TestCase):
             },
         }))
 
-        config = module.Config('development', path = helper.fixture_path('foo'))
+        config = module.Config('development', path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
             '__config_data__': config.__config_data__,
@@ -1267,7 +1267,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_dev': True,
         }))
 
-        config = module.Config('foo', path = helper.fixture_path('foo'))
+        config = module.Config('foo', path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
             '__config_data__': config.__config_data__,
@@ -1297,7 +1297,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_foo': True,
         }))
 
-        config = module.Config('production', path = helper.fixture_path('foo'))
+        config = module.Config('production', path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
             '__config_data__': config.__config_data__,
@@ -1327,7 +1327,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_prod': True,
         }))
 
-        config = module.Config('xxx', path = helper.fixture_path('foo'))
+        config = module.Config('xxx', path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
             '__config_data__': config.__config_data__,
@@ -1357,10 +1357,9 @@ class TestCase(helper.TestCase):
         }))
 
     def test_get(self):
-        return
-        config = module.Config(path = helper.fixture_path('foo'))
+        self.assertTrue(hasattr(module.Config(), 'get'))
 
-        self.assertTrue(hasattr(config, 'get'))
+        config = module.Config(path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config.get()), deepdict({
             '__config_data__': config.__config_data__,
@@ -1389,7 +1388,7 @@ class TestCase(helper.TestCase):
             },
         }))
 
-        config = module.Config('development', path = helper.fixture_path('foo'))
+        config = module.Config('development', path = fixture_foo_root_path)
 
         self.assertEqual(config.__env__, 'development')
         self.assertTrue(isinstance(config.__env_config_file__, dict))
@@ -1422,7 +1421,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_dev': True,
         }))
 
-        config = module.Config('foo', path = helper.fixture_path('foo'))
+        config = module.Config('foo', path = fixture_foo_root_path)
 
         self.assertEqual(config.__env__, 'foo')
         self.assertTrue(isinstance(config.__env_config_file__, dict))
@@ -1455,7 +1454,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_foo': True,
         }))
 
-        config = module.Config('production', path = helper.fixture_path('foo'))
+        config = module.Config('production', path = fixture_foo_root_path)
 
         self.assertEqual(config.__env__, 'production')
         self.assertTrue(isinstance(config.__env_config_file__, dict))
@@ -1488,7 +1487,7 @@ class TestCase(helper.TestCase):
             'some_key_only_for_prod': True,
         }))
 
-        config = module.Config('xxx', path = helper.fixture_path('foo'))
+        config = module.Config('xxx', path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config.get()), deepdict({
             '__config_data__': config.__config_data__,
@@ -1517,8 +1516,462 @@ class TestCase(helper.TestCase):
             },
         }))
 
+    def test_keys(self):
+        self.assertTrue(hasattr(module.Config(), 'keys'))
+
+        config = module.Config(path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+        ])
+
+        config = module.Config('development', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+            'some_key_only_for_dev',
+        ])
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+            'some_key_only_for_foo',
+        ])
+
+        config = module.Config('production', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+            'some_key_only_for_prod',
+        ])
+
+        config = module.Config('xxx', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+        ])
+
+    def test_values(self):
+        self.assertTrue(hasattr(module.Config(), 'values'))
+
+        config = module.Config(path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            default_config_data['a1'],
+            default_config_data['a2'],
+        ])
+
+        config = module.Config('development', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            default_and_development_config_data['a1'],
+            default_and_development_config_data['a2'],
+            default_and_development_config_data['some_key_only_for_dev'],
+        ])
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            default_and_foo_config_data['a1'],
+            default_and_foo_config_data['a2'],
+            default_and_foo_config_data['some_key_only_for_foo'],
+        ])
+
+        config = module.Config('production', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            default_and_production_config_data['a1'],
+            default_and_production_config_data['a2'],
+            default_and_production_config_data['some_key_only_for_prod'],
+        ])
+
+        config = module.Config('xxx', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            default_config_data['a1'],
+            default_config_data['a2'],
+        ])
+
     def test_has(self):
-        pass
+        self.assertTrue(hasattr(module.Config(), 'has'))
+
+        config = module.Config(path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+        config = module.Config('development', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+        config = module.Config('production', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), True)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+        config = module.Config('xxx', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+    def test_class_create(self):
+        try:
+            del environ['ENV']
+        except:
+            pass
+
+        self.assertEqual(environ.get('ENV', None), None)
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, None)
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['foo', 'bar'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'DEFAULT 2',
+                },
+            },
+        }))
+
+        environ['ENV'] = 'development'
+
+        self.assertEqual(environ.get('ENV', None), 'development')
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, 'development')
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['DEV 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'DEV 2',
+                },
+            },
+            'some_key_only_for_dev': True,
+        }))
+
+        environ['ENV'] = 'foo'
+
+        self.assertEqual(environ.get('ENV', None), 'foo')
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, 'foo')
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['FOO 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'FOO 2',
+                },
+            },
+            'some_key_only_for_foo': True,
+        }))
+
+        environ['ENV'] = 'production'
+
+        self.assertEqual(environ.get('ENV', None), 'production')
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, 'production')
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['PROD 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'PROD 2',
+                },
+            },
+            'some_key_only_for_prod': True,
+        }))
+
+        environ['ENV'] = 'xxx'
+
+        self.assertEqual(environ.get('ENV', None), 'xxx')
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, 'xxx')
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['foo', 'bar'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'DEFAULT 2',
+                },
+            },
+        }))
 
     def test_config_attribute_get(self):
         pass
