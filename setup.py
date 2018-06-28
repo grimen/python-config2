@@ -6,7 +6,7 @@ import setuptools
 
 setuptools.setup(
     name = 'config2',
-    version = '0.1.0',
+    version = '0.1.1',
     description = (
         'Python application configuration - highly inspired by `node-config`.'
     ),
