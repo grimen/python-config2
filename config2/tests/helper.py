@@ -101,11 +101,6 @@ def suite(root = DEFAULT_TEST_ROOT_PATH, pattern = DEFAULT_TEST_FILE_PATTERN):
 
     for tests in unittest.defaultTestLoader.discover(root, pattern = pattern):
         for test in tests:
-            # suite.addTests(test)
-
-            # if isinstance(test, unittest.suite.TestSuite):
-            #     suite.addTests(test)
-
             try:
                 suite.addTests(test)
 
@@ -126,14 +121,17 @@ def deepdiff(a, b, exclude_types = None):
     return DeepDiff(a, b, ignore_order = True, report_repetition = True, exclude_types = exclude_types)
 
 def pretty(data):
-    result = json.dumps(data, default = lambda x: repr(x), indent = 4, sort_keys = True)
-    result = result.encode('utf-8', 'ignore')
-    result = highlight(result, lexers.JsonLexer(), formatters.TerminalFormatter())
+    result = pprint.pformat(data, indent = 4, depth = None)
+    result = highlight(result, lexers.PythonLexer(), formatters.TerminalFormatter())
 
     return result
 
-def fixture_path(relative_file_path = None):
-    path_parts = filter(lambda value: value is not None, [FIXTURES_PATH, relative_file_path])
+def root_path(*args):
+    return ROOT_PATH
+
+def fixture_path(*args):
+    args = list([FIXTURES_PATH]) + list(args)
+    path_parts = filter(lambda value: value is not None, [FIXTURES_PATH] + args)
     return path.abspath(path.join(*path_parts))
 
 def fixture_file(relative_file_path, *args, **kvargs):
@@ -169,8 +167,8 @@ def assertModule(result, expression):
 
 def assertDeepEqual(result, expected, expression = None, exclude_types = None):
     # HACK: `deepdiff` works differently on Python 2 vs Python 3 :'(
-    result = json.loads(json.dumps(result, default = lambda x: repr(x)))
-    expected = json.loads(json.dumps(expected, default = lambda x: repr(x)))
+    # result = json.loads(json.dumps(result, default = lambda x: repr(x)))
+    # expected = json.loads(json.dumps(expected, default = lambda x: repr(x)))
 
     diff = deepdiff(result, expected, exclude_types = exclude_types)
 

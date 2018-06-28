@@ -1,0 +1,24 @@
+
+# IDEAS
+
+- support `some_server_port=3000 python app.py` to `some.server.port` auto-mapping? would make `custom-environment-variables` overkill
+
+    Examples:
+
+        - `some_server_port=3000 python app.py`
+        - `SOME_SERVER_PORT=3000 python app.py`
+
+- support optional simplistic schema for how ENV variables from command line should be casted (typing)
+
+    Examples:
+
+        in `config/schema.yml`:
+
+        ```yaml
+        some:
+            server:
+                port: number
+        ```
+
+
+        - `some_server_port=3000 python app.py` => `some.server.port == 3000` instead of `some.server.port == "3000"`

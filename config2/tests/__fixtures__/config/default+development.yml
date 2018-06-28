@@ -1,0 +1,9 @@
+a1: DEFAULT 1
+a2:
+    b1: [1, 2, 3]
+    b2:
+        -   DEV 1
+    b3:
+        c1: 1
+        c2: "DEV 2"
+some_key_only_for_dev: true
