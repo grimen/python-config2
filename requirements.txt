@@ -1,5 +1,9 @@
-git+https://github.com/grimen/python-easypackage.git#egg=easypackage
+easypackage==0.1.8
 attributedict==0.1.6
 deepdiff==3.3.0
 deepmerge==0.0.4
 pyyaml==3.12
+six==1.11.0
+tox==3.0.0
+pygments==2.2.0
+colour-runner==0.0.5
