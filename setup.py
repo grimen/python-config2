@@ -30,9 +30,6 @@ def find_data_files(data_file_patterns = [], root_path = None):
 
     return data_files
 
-# for file in find_data_files(['*.yml']):
-#     print(file)
-
 setuptools.setup(
     name = 'config2',
     version = '0.1.3',
@@ -72,7 +69,6 @@ setuptools.setup(
         ],
         'config2': [
             '*.*',
-            # '*.yml',
         ]
     },
     data_files = find_data_files(['*.yml'], 'config2/tests/__fixtures__'),
