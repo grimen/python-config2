@@ -119,7 +119,7 @@ some_key_only_for_prod: true
 `$ python app.py`
 
 ```python
-from config2 import config
+from config2.config import config
 
 config.get_env() # => None
 config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'DEFAULT 2'}}}
@@ -134,7 +134,7 @@ print('$$$')
 `$ ENV=development python app.py`
 
 ```python
-from config2 import config
+from config2.config import config
 
 config.get_env() # => 'development'
 config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, 'c2': 'DEV 2'}}, 'some_key_only_for_dev': True}
@@ -152,7 +152,7 @@ print('$$$')
 `$ ENV=foo python app.py`
 
 ```python
-from config2 import config
+from config2.config import config
 
 config.get_env() # => 'foo'
 config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, 'c2': 'FOO 2'}}, 'some_key_only_for_foo': True}
@@ -170,7 +170,7 @@ print('$$$')
 `$ ENV=production python app.py`
 
 ```python
-from config2 import config
+from config2.config import config
 
 config.get_env() # => 'production'
 config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, 'c2': 'PROD 2'}}, 'some_key_only_for_foo': True}
@@ -216,7 +216,7 @@ a2:
 `$ A1=x C2=y python app.py`
 
 ```python
-from config2 import config
+from config2.config import config
 
 config.get_env() # => None
 config.get() # => {'a1': 'x', 'a2': {'b1': [1, 2, 3], 'b2': ['foo', 'bar'], 'b3': {'c1': 1, 'c2': 'y'}}}
