@@ -13,7 +13,7 @@ from pprint import pprint
 from deepmerge import Merger
 
 from easypackage.syspath import syspath
-from easypackage.root import root as get_root_path
+from easypackage.root import root as detect_root_path
 
 syspath()
 
@@ -65,7 +65,7 @@ DEFAULT_CONFIG_RESERVED_FILE_BASENAMES = [
     DEFAULT_CONFIG_CUSTOM_ENV_FILE_BASENAME,
 ]
 
-DEFAULT_ROOT_DETECT_FILE_PATTERN = '.git|requirements.txt'
+DEFAULT_ROOT_DETECT_FILE_PATTERN = '.git|requirements.txt|setup.py'
 
 # REVIEW: https://github.com/lorenwest/node-config/wiki/Environment-Variables
 
@@ -115,7 +115,7 @@ class Config(AttributeDict):
             else:
                 detect_root_pattern = detect
 
-            root_path = get_root_path(path, detect_root_pattern) or os.getcwd()
+            root_path = detect_root_path(path, detect_root_pattern) or os.getcwd()
 
         else:
             root_path = path
@@ -159,16 +159,16 @@ class Config(AttributeDict):
         return result
 
     def items(self):
-        return map(lambda key: (key, self.__dict__.get(key, None)), self.__dict__.keys())
+        return list(map(lambda key: (key, self.__dict__.get(key, None)), self.__dict__.keys()))
 
     def keys(self):
-        return self.__dict__.keys()
+        return list(self.__dict__.keys())
 
     def values(self):
-        return map(lambda key: self.__dict__.get(key, None), self.__dict__.keys())
+        return list(map(lambda key: self.__dict__.get(key, None), self.__dict__.keys()))
 
     def has(self, key):
-        return key in self.keys()
+        return (key in self.keys())
 
     def reload(self):
         try:
@@ -188,6 +188,7 @@ class Config(AttributeDict):
             env_config_files = filter((lambda config_file:
                 config_file.basename not in DEFAULT_CONFIG_RESERVED_FILE_BASENAMES
             ), detected_files)
+            env_config_files = list(env_config_files)
 
             # current environment only
             env_config_file = dict(enumerate(filter((lambda config_file:
@@ -198,11 +199,13 @@ class Config(AttributeDict):
             config_files = filter((lambda config_file:
                 config_file is not None
             ), [default_config_file, env_config_file])
+            config_files = list(config_files)
 
             files = [env_variables_file] + config_files
             files = filter((lambda config_file:
                 config_file is not None
             ), files)
+            files = list(files)
 
             # load: custom-environment-variables.yml
             try:
@@ -232,6 +235,7 @@ class Config(AttributeDict):
             config_datas = map((lambda _config_file:
                 _config_file.data.copy()
             ), config_files)
+            config_datas = list(config_datas)
 
             config_data = self.__class__.merge(*config_datas)
 
@@ -259,13 +263,16 @@ class Config(AttributeDict):
             config_file_basename = config_file_name_parts.get(0, None)
             config_file_extension = config_file_name_parts.get(1, None)
 
-            config_files.append(AttributeDict({
-                'basename': config_file_basename,
-                'path': config_file_path,
-                'name': config_file_name,
-                'extension': config_file_extension,
-                'format': DEFAULT_CONFIG_FORMAT_EXTENSIONS.get(config_file_extension, None)
-            }))
+            is_valid_config_file_extension = (config_file_extension in DEFAULT_CONFIG_FORMAT_EXTENSIONS.keys())
+
+            if is_valid_config_file_extension:
+                config_files.append(AttributeDict({
+                    'basename': config_file_basename,
+                    'path': config_file_path,
+                    'name': config_file_name,
+                    'extension': config_file_extension,
+                    'format': DEFAULT_CONFIG_FORMAT_EXTENSIONS.get(config_file_extension, None)
+                }))
 
         return config_files
 
@@ -334,13 +341,16 @@ class Config(AttributeDict):
         # print(type(environment))
         # for key in environment.keys():
         #     print('detect_env', key, environ.get(key, None))
-        matching_keys = filter(lambda key: environ.get(key, None), keys)
-        matching_keys = filter(lambda key: key is not None, matching_keys)
+        matching_keys = list(filter(lambda key: environ.get(key, None), keys))
+        matching_keys = list(filter(lambda key: key is not None, matching_keys))
 
         matching_key = len(matching_keys) and matching_keys[0]
         matching_key = matching_key or default
 
-        value = environ.get(matching_key, None)
+        if matching_key:
+            value = environ.get(matching_key, None)
+        else:
+            value = None
 
         return value
 

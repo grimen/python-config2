@@ -8,7 +8,7 @@ all: test
 
 .PHONY: clean
 clean:
-	CLEAR_PATTERNS='*.pyc __pycache__ build dist *.egg-info'; \
+	CLEAR_PATTERNS='*.pyc __pycache__ build dist *.egg-info .tox'; \
 	for PATTERN in $$CLEAR_PATTERNS; do \
 		echo "rm -rf \$$(find $$PWD -name $$PATTERN)"; \
 		rm -rf $$(find $$PWD -name $$PATTERN); \
@@ -20,7 +20,7 @@ install:
 
 .PHONY: install-ci
 install-ci:
-	pip install -U setuptools tox tox-travis && \
+	pip install -U setuptools setuptools-git tox tox-travis && \
 	pip install -r requirements.txt
 
 .PHONY: test

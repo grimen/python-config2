@@ -252,7 +252,7 @@ $ make test-tox
 
 ## About
 
-This project was mainly initiated - in lack of existing alternatives - to be used at our work at **[Markable.ai](https://markable.ai)** to have common application environment between various programming environments where **Python** (research, CV, AI) and **Node.js** (I/O, ) currently are most used.
+This project was mainly initiated - in lack of existing alternatives - to be used at our work at **[Markable.ai](https://markable.ai)** to have common application environment between various programming environments where **Python** (research, CV, AI) and **Node.js** (I/O, APIs, UIs, scripts) currently are most used.
 
 
 ## License

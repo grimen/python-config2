@@ -1,8 +1,37 @@
 
+import os
+import glob
 import setuptools
 
 # DISABLED/BUG: this line fails when `pip install config2` but works `pip install .`
 # from config2 import __version__
+
+def find_data_files(data_file_patterns = [], root_path = None):
+    root_path = root_path or os.path.abspath(os.path.dirname(__file__))
+    data_file_dirs = []
+
+    for root, dirs, files in os.walk(root_path):
+        data_file_dirs.append(root)
+
+    data_files = []
+
+    for data_file_dir in data_file_dirs:
+        files = []
+
+        for data_file_pattern in data_file_patterns:
+            files += glob.glob(os.path.join(data_file_dir, data_file_pattern))
+
+        if not files:
+            continue
+
+        target = os.path.join(root_path, data_file_dir)
+
+        data_files.append((target, files))
+
+    return data_files
+
+# for file in find_data_files(['*.yml']):
+#     print(file)
 
 setuptools.setup(
     name = 'config2',
@@ -43,9 +72,10 @@ setuptools.setup(
         ],
         'config2': [
             '*.*',
+            # '*.yml',
         ]
     },
-    py_modules = ['config2'],
+    data_files = find_data_files(['*.yml'], 'config2/tests/__fixtures__'),
     license = 'MIT',
     classifiers = [
         'Topic :: Software Development :: Libraries',
@@ -62,4 +92,6 @@ setuptools.setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     zip_safe = True,
+    include_package_data = True,
+    setup_requires = ['setuptools_git >= 1.2'],
 )

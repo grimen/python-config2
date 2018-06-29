@@ -26,9 +26,10 @@ deepdict = AttributeDict.dict
 #       FIXTURES
 # --------------------------------------
 
-package_root_path = helper.root_path()
 fixture_foo_root_path = helper.fixture_path('foo')
 fixture_foo_src_nested_path = helper.fixture_path('foo', 'src', 'nested')
+
+package_root_path = helper.root_path()
 
 env_variables_file_basename = 'custom-environment-variables'
 env_variables_file_content = helper.fixture('foo/config/{0}.yml'.format(env_variables_file_basename)).read()
@@ -477,19 +478,19 @@ class TestCase(helper.TestCase):
 
         config = module.Config()
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config(detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -501,7 +502,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config(path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_src_nested_path, detect = True)
 
@@ -509,15 +510,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development')
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_root_path)
 
@@ -529,7 +530,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_src_nested_path, detect = True)
 
@@ -537,15 +538,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo')
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_root_path)
 
@@ -557,7 +558,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_src_nested_path, detect = True)
 
@@ -565,15 +566,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production')
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_root_path)
 
@@ -585,7 +586,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_src_nested_path, detect = True)
 
@@ -593,15 +594,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx')
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_root_path)
 
@@ -613,7 +614,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), [])
+        self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
 
@@ -624,19 +625,19 @@ class TestCase(helper.TestCase):
 
         config = module.Config()
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config(detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -648,7 +649,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config(path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_src_nested_path, detect = True)
 
@@ -656,15 +657,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development')
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_root_path)
 
@@ -676,7 +677,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_src_nested_path, detect = True)
 
@@ -684,15 +685,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo')
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_root_path)
 
@@ -704,7 +705,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_src_nested_path, detect = True)
 
@@ -712,15 +713,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production')
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_root_path)
 
@@ -732,7 +733,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_src_nested_path, detect = True)
 
@@ -740,15 +741,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx')
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_root_path)
 
@@ -760,7 +761,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
 
@@ -918,19 +919,19 @@ class TestCase(helper.TestCase):
 
         config = module.Config()
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config(detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config(path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -942,7 +943,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config(path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config(path = fixture_foo_src_nested_path, detect = True)
 
@@ -950,15 +951,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development')
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_root_path)
 
@@ -970,7 +971,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('development', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('development', path = fixture_foo_src_nested_path, detect = True)
 
@@ -978,15 +979,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo')
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_root_path)
 
@@ -998,7 +999,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('foo', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('foo', path = fixture_foo_src_nested_path, detect = True)
 
@@ -1006,15 +1007,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production')
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_root_path)
 
@@ -1026,7 +1027,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('production', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('production', path = fixture_foo_src_nested_path, detect = True)
 
@@ -1034,15 +1035,15 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx')
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = package_root_path, detect = True)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_root_path)
 
@@ -1054,7 +1055,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path)
 
-        self.assertDeepEqual(map(deepdict, config.__env_config_files__), [])
+        self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
 
         config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
 

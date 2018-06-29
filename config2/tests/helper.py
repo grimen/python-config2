@@ -29,9 +29,13 @@ syspath()
 from six import PY2, PY3, string_types
 
 CURRENT_PATH = path.abspath(path.dirname(__file__))
-ROOT_PATH = path.abspath(path.join(CURRENT_PATH, '..', '..'))
+ROOT_PATH = path.abspath(os.getcwd())
+# ROOT_PATH = path.abspath(path.join(CURRENT_PATH, '..', '..')) # NOTE: causes trouble in `tox`
 
-PACKAGE_SOURCE_DIRECTORY = path.basename(ROOT_PATH.strip(os.sep)).replace('python-', '').replace('-', '_') # e.g. `python-foo-bar` => `foo_bar`
+print('CURRENT_PATH', CURRENT_PATH)
+print('ROOT_PATH', ROOT_PATH)
+
+PACKAGE_SOURCE_DIRECTORY = 'config2'
 PACKAGE_SOURCE_PATH = path.join(ROOT_PATH, PACKAGE_SOURCE_DIRECTORY)
 
 try:
@@ -97,9 +101,14 @@ def run(test):
 
     # NOTE on `tox` (2/2): ran into issues with `tox` raising `ncurses` error, so disabling colors when running in `tox` for now
     if 'ColourTextTestResult' in globals():
-        unittest.runner.TextTestRunner(verbosity = 2, resultclass = ColourTextTestResult).run(_suite)
+        result = unittest.runner.TextTestRunner(verbosity = 2, resultclass = ColourTextTestResult).run(_suite)
     else:
-        unittest.runner.TextTestRunner(verbosity = 2).run(_suite)
+        result = unittest.runner.TextTestRunner(verbosity = 2).run(_suite)
+
+    succesful = not result.wasSuccessful()
+    exit_code = int(succesful)
+
+    sys.exit(exit_code)
 
 def suite(root = DEFAULT_TEST_ROOT_PATH, pattern = DEFAULT_TEST_FILE_PATTERN):
     root = root or DEFAULT_TEST_ROOT_PATH
