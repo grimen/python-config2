@@ -35,7 +35,7 @@ def find_data_files(data_file_patterns = [], root_path = None):
 
 setuptools.setup(
     name = 'config2',
-    version = '0.1.2',
+    version = '0.1.3',
     description = (
         'Python application configuration - highly inspired by `node-config`.'
     ),
