@@ -338,9 +338,6 @@ class Config(AttributeDict):
 
     @staticmethod
     def detect_env(keys, default = None):
-        # print(type(environment))
-        # for key in environment.keys():
-        #     print('detect_env', key, environ.get(key, None))
         matching_keys = list(filter(lambda key: environ.get(key, None), keys))
         matching_keys = list(filter(lambda key: key is not None, matching_keys))
 
