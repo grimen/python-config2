@@ -1,5 +1,5 @@
 easypackage >= 0.1.8
-attributedict >= 0.1.6
+attributedict >= 0.1.8
 deepmerge >= 0.0.4
 pyyaml >= 3.12
 six >= 1.11.0
