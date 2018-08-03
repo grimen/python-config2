@@ -71,7 +71,7 @@ data_files = find_data_files(['*.*'], os.path.join('config2', 'tests', '__fixtur
 
 config = {
     'name': 'config2',
-    'version': '0.1.3',
+    'version': '0.1.4',
     'description': (
         'Python application configuration - highly inspired by `node-config`.'
     ),
