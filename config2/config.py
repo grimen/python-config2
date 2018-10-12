@@ -77,6 +77,8 @@ DEFAULT_ROOT_DETECT_FILE_PATTERN = '.git|requirements.txt|setup.py'
 # NODE_CONFIG_STRICT_MODE
 # DEFAULT_SUPPRESS_NO_CONFIG_WARNING
 
+DISABLED = 1000 # NOTE: no easy way of disable Python standard logger instance without affecting global settings, so this is a workaround for now
+
 
 # =========================================
 #       Errors
@@ -123,9 +125,10 @@ class Config(AttributeDict):
         config_directory_name = config_directory_name or DEFAULT_CONFIG_DIRECTORY_NAME # TODO: log warning if `config_path` used, means `config_directory_name` is ignored
         config_path = config_path or os.path.join(root_path, config_directory_name)
 
+
         if logger == False:
             logger = logger or self.__class__.logger('base')
-            logging.disable(logging.INFO)
+            logger.setLevel(DISABLED)
         else:
             logger = logger or self.__class__.logger('base')
 
