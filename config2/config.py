@@ -7,7 +7,8 @@ import sys
 import os
 import logging
 
-from os import path, listdir, environ
+from os import environ as env
+from os import path, listdir
 from pprint import pprint
 
 from deepmerge import Merger
@@ -204,19 +205,11 @@ class Config(AttributeDict):
             ), [default_config_file, env_config_file])
             config_files = list(config_files)
 
-            files = [env_variables_file] + config_files
+            files = config_files + [env_variables_file]
             files = filter((lambda config_file:
                 config_file is not None
             ), files)
             files = list(files)
-
-            # load: custom-environment-variables.yml
-            try:
-                self.__class__.load_file(env_variables_file)
-
-            except Exception as error:
-                if not self.__silent__:
-                    raise error
 
             # load: default.yml
             try:
@@ -235,10 +228,22 @@ class Config(AttributeDict):
                     if not self.__silent__:
                         raise error
 
+            # load: custom-environment-variables.yml
+            try:
+                self.__class__.load_file(env_variables_file)
+
+                env_variables_file.data = self.__class__.map_env_variable_config(env_variables_file.data)
+
+            except Exception as error:
+                if not self.__silent__:
+                    raise error
+
             config_datas = map((lambda _config_file:
                 _config_file.data.copy()
             ), config_files)
             config_datas = list(config_datas)
+
+            config_datas.append(env_variables_file.data.copy())
 
             config_data = self.__class__.merge(*config_datas)
 
@@ -255,6 +260,30 @@ class Config(AttributeDict):
         except Exception as error:
             if not self.__silent__:
                 raise error
+
+    @staticmethod
+    def map_env_variable_config(env_variable_mapping_object):
+        env_variable_config = {} # dict(env_variable_mapping_object)
+
+        for key, value in env_variable_mapping_object.items():
+            if isinstance(value, dict):
+                env_variable_config_value = Config.map_env_variable_config(value)
+
+                if env_variable_config_value is not None:
+                    if isinstance(env_variable_config_value, dict):
+                        if len(env_variable_config_value):
+                            env_variable_config[key] = env_variable_config_value
+                    else:
+                        env_variable_config[key] = env_variable_config_value
+
+            else:
+                env_variable_key = value
+                env_variable_value = env.get(env_variable_key)
+
+                if env_variable_value is not None:
+                    env_variable_config[key] = env_variable_value
+
+        return env_variable_config
 
     @staticmethod
     def detect_files(config_path):
@@ -341,14 +370,14 @@ class Config(AttributeDict):
 
     @staticmethod
     def detect_env(keys, default = None):
-        matching_keys = list(filter(lambda key: environ.get(key, None), keys))
+        matching_keys = list(filter(lambda key: env.get(key, None), keys))
         matching_keys = list(filter(lambda key: key is not None, matching_keys))
 
         matching_key = len(matching_keys) and matching_keys[0]
         matching_key = matching_key or default
 
         if matching_key:
-            value = environ.get(matching_key, None)
+            value = env.get(matching_key, None)
         else:
             value = None
 

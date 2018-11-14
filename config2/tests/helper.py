@@ -11,6 +11,7 @@ import json
 import inspect
 import pprint
 import types
+import logging
 
 from os import path, environ
 try:
@@ -49,10 +50,13 @@ FIXTURES_PATH = path.join(TESTS_PATH, '__fixtures__')
 DEFAULT_TEST_ROOT_PATH = path.abspath(path.dirname(__file__))
 DEFAULT_TEST_FILE_PATTERN = environ.get('TESTS_PATTERN', 'test_*.py')
 
+PYTHON_VERSION = sys.version_info
+
 print('# =========================================')
 print('#       {0}'.format(__name__))
 print('# --------------------------------------\n')
 
+print('PYTHON_VERSION: {0}'.format(PYTHON_VERSION))
 print('ROOT_PATH: {0}'.format(ROOT_PATH))
 print('CURRENT_PATH: {0}'.format(CURRENT_PATH))
 print('PACKAGE_SOURCE: {0}'.format(PACKAGE_SOURCE_DIRECTORY))
@@ -133,7 +137,7 @@ def load(root = DEFAULT_TEST_ROOT_PATH, pattern = DEFAULT_TEST_FILE_PATTERN):
     unittest.defaultTestLoader.discover(root, pattern = pattern)
 
 def deepdiff(a, b, exclude_types = None):
-    exclude_types = exclude_types or []
+    exclude_types = exclude_types or [logging.Logger]
 
     return DeepDiff(a, b, ignore_order = True, report_repetition = True, exclude_types = exclude_types)
 

@@ -3,7 +3,10 @@
 #       DEPS
 # --------------------------------------
 
-from os import path, environ
+import json
+
+from os import path
+from os import environ as env
 
 from easypackage.syspath import syspath
 
@@ -31,9 +34,18 @@ fixture_foo_src_nested_path = helper.fixture_path('foo', 'src', 'nested')
 
 package_root_path = helper.root_path()
 
+CUSTOM_ENV = {
+    'A1': 'override',
+    'A2': 'should have no effect',
+    'C2': '42',
+}
+
 env_variables_file_basename = 'custom-environment-variables'
 env_variables_file_content = helper.fixture('foo/config/{0}.yml'.format(env_variables_file_basename)).read()
-env_variables_file_data = yaml.unpack(env_variables_file_content)
+env_variables_file_content_mapped = '{0}'.format(env_variables_file_content)
+for key in CUSTOM_ENV.keys():
+    env_variables_file_content_mapped = env_variables_file_content_mapped.replace(key, json.dumps(CUSTOM_ENV[key]))
+env_variables_file_data = yaml.unpack(env_variables_file_content_mapped)
 env_variables_file = {
     'name': '{0}.yml'.format(env_variables_file_basename),
     'extension': 'yml',
@@ -150,6 +162,21 @@ class TestCase(helper.TestCase):
     def test_env(self):
         self.assertTrue(hasattr(module.Config(), '__env__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertEqual(config.__env__, None)
@@ -173,6 +200,21 @@ class TestCase(helper.TestCase):
     def test_path(self):
         self.assertTrue(hasattr(module.Config(), '__path__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertEqual(config.__path__, package_root_path)
@@ -191,6 +233,21 @@ class TestCase(helper.TestCase):
 
     def test_root_path(self):
         self.assertTrue(hasattr(module.Config(), '__root_path__'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config()
 
@@ -218,6 +275,21 @@ class TestCase(helper.TestCase):
 
     def test_config_path(self):
         self.assertTrue(hasattr(module.Config(), '__config_path__'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config()
 
@@ -250,6 +322,21 @@ class TestCase(helper.TestCase):
     def test_config_directory_name(self):
         self.assertTrue(hasattr(module.Config(), '__config_directory_name__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertEqual(config.__config_directory_name__, 'config')
@@ -266,6 +353,21 @@ class TestCase(helper.TestCase):
     def test_config_data(self):
         self.assertTrue(hasattr(module.Config(), '__config_data__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertDeepEqual(deepdict(config.__config_data__), None)
@@ -409,73 +511,14 @@ class TestCase(helper.TestCase):
         config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
 
         self.assertDeepEqual(deepdict(config.__config_data__), default_config_data)
-
-    def test_env_variables_file(self):
-        self.assertTrue(hasattr(module.Config(), '__env_variables_file__'))
-
-        config = module.Config()
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config(detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config(path = package_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config(path = package_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config(path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config(path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config(path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config(path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development')
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config('development', path = package_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config('development', path = package_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config('development', path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development', path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development', path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), None)
-
-        config = module.Config('development', path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
 
     def test_files(self):
         self.assertTrue(hasattr(module.Config(), '__files__'))
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
         config = module.Config()
 
         self.assertDeepEqual(map(deepdict, config.__files__), map(lambda x: x, []))
@@ -494,7 +537,7 @@ class TestCase(helper.TestCase):
 
         config = module.Config(path = fixture_foo_root_path)
 
-        self.assertDeepEqual(map(deepdict, config.__files__), map(deepdict, [env_variables_file, default_config_file]))
+        self.assertDeepEqual(map(deepdict, config.__files__), map(deepdict, [default_config_file, env_variables_file]))
 
         config = module.Config(path = fixture_foo_root_path, detect = True)
 
@@ -620,8 +663,27 @@ class TestCase(helper.TestCase):
 
         self.assertDeepEqual(map(deepdict, config.__files__), map(deepdict, [env_variables_file, default_config_file]))
 
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_config_files(self):
         self.assertTrue(hasattr(module.Config(), '__config_files__'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config()
 
@@ -770,6 +832,21 @@ class TestCase(helper.TestCase):
     def test_default_config_file(self):
         self.assertTrue(hasattr(module.Config(), '__default_config_file__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertDeepEqual(config.__default_config_file__, None)
@@ -917,6 +994,21 @@ class TestCase(helper.TestCase):
     def test_env_config_files(self):
         self.assertTrue(hasattr(module.Config(), '__env_config_files__'))
 
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config()
 
         self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(lambda x: x, []))
@@ -1060,155 +1152,23 @@ class TestCase(helper.TestCase):
         config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
 
         self.assertDeepEqual(map(deepdict, config.__env_config_files__), map(deepdict, env_config_files))
-
-    def test_env_variables_file(self):
-        self.assertTrue(hasattr(module.Config(), '__env_variables_file__'))
-
-        config = module.Config()
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config(detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config(path = package_root_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config(path = package_root_path, detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config(path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config(path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config(path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config(path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development')
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('development', path = package_root_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('development', path = package_root_path, detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('development', path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development', path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('development', path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('development', path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('foo')
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('foo', path = package_root_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('foo', path = package_root_path, detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('foo', path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('foo', path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('foo', path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('foo', path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('production')
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('production', path = package_root_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('production', path = package_root_path, detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('production', path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('production', path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('production', path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('production', path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('xxx')
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('xxx', path = package_root_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('xxx', path = package_root_path, detect = True)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('xxx', path = fixture_foo_root_path)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('xxx', path = fixture_foo_root_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
-
-        config = module.Config('xxx', path = fixture_foo_src_nested_path)
-
-        self.assertDeepEqual(config.__env_variables_file__, None)
-
-        config = module.Config('xxx', path = fixture_foo_src_nested_path, detect = True)
-
-        self.assertDeepEqual(deepdict(config.__env_variables_file__), env_variables_file)
 
     def test_config(self):
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
+
         config = module.Config(path = fixture_foo_root_path)
 
         self.assertDeepEqual(deepdict(config), deepdict({
@@ -1357,8 +1317,61 @@ class TestCase(helper.TestCase):
             },
         }))
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': env['A1'],
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['FOO 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': env['C2'],
+                },
+            },
+            'some_key_only_for_foo': True,
+        }))
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_get(self):
         self.assertTrue(hasattr(module.Config(), 'get'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -1517,8 +1530,61 @@ class TestCase(helper.TestCase):
             },
         }))
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(deepdict(config.get()), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': env['A1'],
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['FOO 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': env['C2'],
+                },
+            },
+            'some_key_only_for_foo': True,
+        }))
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_keys(self):
         self.assertTrue(hasattr(module.Config(), 'keys'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -1633,8 +1699,54 @@ class TestCase(helper.TestCase):
             'a2',
         ])
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.keys(), [
+            '__config_data__',
+            '__config_directory_name__',
+            '__config_files__',
+            '__config_path__',
+            '__default_config_file__',
+            '__env_config_file__',
+            '__env_config_files__',
+            '__env_variables_file__',
+            '__env__',
+            '__files__',
+            '__logger__',
+            '__path__',
+            '__root_path__',
+            '__silent__',
+
+            'a1',
+            'a2',
+            'some_key_only_for_foo',
+        ])
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_values(self):
         self.assertTrue(hasattr(module.Config(), 'values'))
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config(path = fixture_foo_root_path)
 
@@ -1749,6 +1861,44 @@ class TestCase(helper.TestCase):
             default_config_data['a2'],
         ])
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.values(), [
+            config.__config_data__,
+            config.__config_directory_name__,
+            config.__config_files__,
+            config.__config_path__,
+            config.__default_config_file__,
+            config.__env_config_file__,
+            config.__env_config_files__,
+            config.__env_variables_file__,
+            config.__env__,
+            config.__files__,
+            config.__logger__,
+            config.__path__,
+            config.__root_path__,
+            config.__silent__,
+
+            env['A1'],
+            Config.merge(
+                default_and_foo_config_data['a2'],
+                {
+                    'b3': {
+                        'c2': env['C2']
+                    },
+                },
+            ),
+            default_and_foo_config_data['some_key_only_for_foo'],
+        ])
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_has(self):
         self.assertTrue(hasattr(module.Config(), 'has'))
 
@@ -1797,13 +1947,45 @@ class TestCase(helper.TestCase):
         self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
         self.assertDeepEqual(config.has('xxx'), False)
 
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        config = module.Config('foo', path = fixture_foo_root_path)
+
+        self.assertDeepEqual(config.has('a1'), True)
+        self.assertDeepEqual(config.has('a2'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_dev'), False)
+        self.assertDeepEqual(config.has('some_key_only_for_foo'), True)
+        self.assertDeepEqual(config.has('some_key_only_for_prod'), False)
+        self.assertDeepEqual(config.has('xxx'), False)
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
+
     def test_class_create(self):
         try:
-            del environ['ENV']
+            del env['ENV']
         except:
             pass
 
-        self.assertEqual(environ.get('ENV', None), None)
+        self.assertEqual(env.get('ENV', None), None)
+
+        try:
+            del env['A1']
+        except:
+            pass
+
+        try:
+            del env['A2']
+        except:
+            pass
+
+        try:
+            del env['C2']
+        except:
+            pass
 
         config = module.Config.create(path = fixture_foo_root_path)
 
@@ -1835,9 +2017,9 @@ class TestCase(helper.TestCase):
             },
         }))
 
-        environ['ENV'] = 'development'
+        env['ENV'] = 'development'
 
-        self.assertEqual(environ.get('ENV', None), 'development')
+        self.assertEqual(env.get('ENV', None), 'development')
 
         config = module.Config.create(path = fixture_foo_root_path)
 
@@ -1870,9 +2052,9 @@ class TestCase(helper.TestCase):
             'some_key_only_for_dev': True,
         }))
 
-        environ['ENV'] = 'foo'
+        env['ENV'] = 'foo'
 
-        self.assertEqual(environ.get('ENV', None), 'foo')
+        self.assertEqual(env.get('ENV', None), 'foo')
 
         config = module.Config.create(path = fixture_foo_root_path)
 
@@ -1905,9 +2087,9 @@ class TestCase(helper.TestCase):
             'some_key_only_for_foo': True,
         }))
 
-        environ['ENV'] = 'production'
+        env['ENV'] = 'production'
 
-        self.assertEqual(environ.get('ENV', None), 'production')
+        self.assertEqual(env.get('ENV', None), 'production')
 
         config = module.Config.create(path = fixture_foo_root_path)
 
@@ -1940,9 +2122,9 @@ class TestCase(helper.TestCase):
             'some_key_only_for_prod': True,
         }))
 
-        environ['ENV'] = 'xxx'
+        env['ENV'] = 'xxx'
 
-        self.assertEqual(environ.get('ENV', None), 'xxx')
+        self.assertEqual(env.get('ENV', None), 'xxx')
 
         config = module.Config.create(path = fixture_foo_root_path)
 
@@ -1973,6 +2155,49 @@ class TestCase(helper.TestCase):
                 },
             },
         }))
+
+        env['A1'] = CUSTOM_ENV.get('A1')
+        env['A2'] = CUSTOM_ENV.get('A2')
+        env['C2'] = CUSTOM_ENV.get('C2')
+
+        env['ENV'] = 'foo'
+
+        self.assertEqual(env.get('ENV', None), 'foo')
+
+        config = module.Config.create(path = fixture_foo_root_path)
+
+        self.assertEqual(config.__env__, 'foo')
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': env['A1'],
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['FOO 1'],
+                'b3': {
+                    'c1': 1,
+                    'c2': env['C2'],
+                },
+            },
+            'some_key_only_for_foo': True,
+        }))
+
+        del env['A1']
+        del env['A2']
+        del env['C2']
 
     def test_config_attribute_get(self):
         pass
