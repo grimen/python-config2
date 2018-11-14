@@ -35,12 +35,14 @@ clean:
 
 .PHONY: install
 install:
-	pip install -r requirements.txt
+	PYTHON_USER_FLAG=$(shell python -c "import sys; print('' if hasattr(sys, 'real_prefix') or hasattr(sys, 'base_prefix') else '--user')") && \
+	pip install $(PYTHON_USER_FLAG) -r requirements.txt
 
 .PHONY: install-ci
 install-ci:
-	pip install -U setuptools setuptools-git tox tox-travis && \
-	pip install -r requirements.txt
+	PYTHON_USER_FLAG=$(shell python -c "import sys; print('' if hasattr(sys, 'real_prefix') or hasattr(sys, 'base_prefix') else '--user')") && \
+	pip install $(PYTHON_USER_FLAG) -U setuptools setuptools-git tox tox-travis && \
+	pip install $(PYTHON_USER_FLAG) -r requirements.txt
 
 
 # =========================================
@@ -50,17 +52,18 @@ install-ci:
 .PHONY: build
 build:
 	rm -rf ./dist && \
-	python -m pip install --user --upgrade setuptools wheel && \
+	PYTHON_USER_FLAG=$(shell python -c "import sys; print('' if hasattr(sys, 'real_prefix') or hasattr(sys, 'base_prefix') else '--user')") && \
+	python -m pip install $(PYTHON_USER_FLAG) --upgrade setuptools wheel && \
 	python setup.py sdist bdist_wheel
 
 .PHONY: dist
 dist: build
-	python -m pip install --user --upgrade twine && \
+	python -m pip install $(PYTHON_USER_FLAG) --upgrade twine && \
 	twine upload dist/*
 
 .PHONY: dist-dev
 dist-dev: build
-	python -m pip install --user --upgrade twine && \
+	python -m pip install $(PYTHON_USER_FLAG) --upgrade twine && \
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 
