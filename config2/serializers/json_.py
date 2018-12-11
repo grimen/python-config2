@@ -45,6 +45,9 @@ def unpack(value):
 
         value = value or NULL
 
+        if value is None:
+            return None
+
         result = json.loads(value)
 
         return result

@@ -229,21 +229,23 @@ class Config(AttributeDict):
                         raise error
 
             # load: custom-environment-variables.yml
-            try:
-                self.__class__.load_file(env_variables_file)
+            if env_variables_file:
+                try:
+                    self.__class__.load_file(env_variables_file)
 
-                env_variables_file.data = self.__class__.map_env_variable_config(env_variables_file.data)
+                    env_variables_file.data = self.__class__.map_env_variable_config(env_variables_file.data)
 
-            except Exception as error:
-                if not self.__silent__:
-                    raise error
+                except Exception as error:
+                    if not self.__silent__:
+                        raise error
 
             config_datas = map((lambda _config_file:
-                _config_file.data.copy()
+                _config_file and _config_file.data and _config_file.data.copy()
             ), config_files)
             config_datas = list(config_datas)
 
-            config_datas.append(env_variables_file.data.copy())
+            if env_variables_file:
+                config_datas.append(env_variables_file.data.copy())
 
             config_data = self.__class__.merge(*config_datas)
 
@@ -263,6 +265,8 @@ class Config(AttributeDict):
 
     @staticmethod
     def map_env_variable_config(env_variable_mapping_object):
+        env_variable_mapping_object = env_variable_mapping_object or {}
+
         env_variable_config = {} # dict(env_variable_mapping_object)
 
         for key, value in env_variable_mapping_object.items():

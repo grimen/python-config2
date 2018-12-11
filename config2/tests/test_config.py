@@ -32,6 +32,10 @@ deepdict = AttributeDict.dict
 fixture_foo_root_path = helper.fixture_path('foo')
 fixture_foo_src_nested_path = helper.fixture_path('foo', 'src', 'nested')
 
+fixture_bar_root_path = helper.fixture_path('bar')
+
+fixture_baz_root_path = helper.fixture_path('baz')
+
 package_root_path = helper.root_path()
 
 CUSTOM_ENV = {
@@ -1354,6 +1358,56 @@ class TestCase(helper.TestCase):
         del env['A1']
         del env['A2']
         del env['C2']
+
+        # NOTE: verify case of `custom-environment-variables` empty
+        config = module.Config('bar', path = fixture_bar_root_path, silent = False)
+
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+
+            'a1': 'DEFAULT 1',
+            'a2': {
+                'b1': [1, 2, 3],
+                'b2': ['foo', 'bar'],
+                'b3': {
+                    'c1': 1,
+                    'c2': 'DEFAULT 2',
+                },
+            },
+        }))
+
+        # NOTE: verify case of `custom-environment-variables` non-existing
+        config = module.Config('baz', path = fixture_baz_root_path, silent = False)
+
+        self.assertDeepEqual(deepdict(config), deepdict({
+            '__config_data__': config.__config_data__,
+            '__config_directory_name__': config.__config_directory_name__,
+            '__config_files__': config.__config_files__,
+            '__config_path__': config.__config_path__,
+            '__default_config_file__': config.__default_config_file__,
+            '__env_config_file__': config.__env_config_file__,
+            '__env_config_files__': config.__env_config_files__,
+            '__env_variables_file__': config.__env_variables_file__,
+            '__env__': config.__env__,
+            '__files__': config.__files__,
+            '__logger__': config.__logger__,
+            '__path__': config.__path__,
+            '__root_path__': config.__root_path__,
+            '__silent__': config.__silent__,
+        }))
 
     def test_get(self):
         self.assertTrue(hasattr(module.Config(), 'get'))

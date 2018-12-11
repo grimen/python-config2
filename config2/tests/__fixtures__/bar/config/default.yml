@@ -1,0 +1,9 @@
+a1: DEFAULT 1
+a2:
+    b1: [1, 2, 3]
+    b2:
+        -   foo
+        -   bar
+    b3:
+        c1: 1
+        c2: "DEFAULT 2"
