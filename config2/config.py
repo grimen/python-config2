@@ -243,7 +243,12 @@ class Config(AttributeDict):
             ), config_files)
             config_datas = list(config_datas)
 
-            config_datas.append(env_variables_file.data.copy())
+            try:
+                config_datas.append(env_variables_file.data.copy())
+
+            except Exception as error:
+                if not self.__silent__:
+                    raise error
 
             config_data = self.__class__.merge(*config_datas)
 
