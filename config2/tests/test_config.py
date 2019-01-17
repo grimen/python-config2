@@ -1409,6 +1409,67 @@ class TestCase(helper.TestCase):
             '__silent__': config.__silent__,
         }))
 
+    def test_get_env(self):
+        self.assertTrue(hasattr(module.Config(), 'get_env'))
+
+        try:
+            del env['ENV']
+        except:
+            pass
+
+        try:
+            del env['PYTHON_ENV']
+        except:
+            pass
+
+        config = module.Config('development')
+
+        self.assertEqual(config.get_env(), 'development')
+
+        config = module.Config('foo')
+
+        self.assertEqual(config.get_env(), 'foo')
+
+        config = module.Config('production')
+
+        self.assertEqual(config.get_env(), 'production')
+
+        env['PYTHON_ENV'] = 'development'
+
+        # config = module.Config()
+        config = module.Config.create()
+
+        self.assertEqual(config.get_env(), 'development')
+
+        env['PYTHON_ENV'] = 'foo'
+
+        # config = module.Config()
+        config = module.Config.create()
+
+        self.assertEqual(config.get_env(), 'foo')
+
+        env['PYTHON_ENV'] = 'production'
+
+        # config = module.Config()
+        config = module.Config.create()
+
+        self.assertEqual(config.get_env(), 'production')
+
+        try:
+            del env['ENV']
+        except:
+            pass
+
+        try:
+            del env['PYTHON_ENV']
+        except:
+            pass
+
+        # config = module.Config()
+        config = module.Config.create()
+
+        self.assertEqual(config.get_env(), None)
+
     def test_get(self):
         self.assertTrue(hasattr(module.Config(), 'get'))
 

@@ -152,6 +152,9 @@ class Config(AttributeDict):
 
         super(AttributeDict, self).__init__({})
 
+    def get_env(self):
+        return self.__env__
+
     def get(self, key = None, default = None):
         if key is None:
             result = self.__dict__
