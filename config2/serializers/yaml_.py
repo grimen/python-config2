@@ -3,9 +3,9 @@
 #       DEPS
 # --------------------------------------
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 import yaml
 import re
@@ -69,11 +69,3 @@ def test(value):
 
     except Exception as error:
         raise ValueError('{0}: {1}'.format(error, value))
-
-
-# =========================================
-#       MAIN
-# --------------------------------------
-
-if __name__ == '__main__':
-    pass

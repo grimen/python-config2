@@ -8,9 +8,9 @@ import json
 from os import path
 from os import environ as env
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 from attributedict.collections import AttributeDict
 

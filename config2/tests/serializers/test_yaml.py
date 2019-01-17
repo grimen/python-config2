@@ -7,9 +7,9 @@ import types
 
 from os import path
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 from config2.tests import helper
 from config2.compat import string_types

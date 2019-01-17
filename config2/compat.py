@@ -3,9 +3,9 @@
 #       DEPS
 # --------------------------------------
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 # @see https://github.com/benjaminp/six/blob/master/six.py
 

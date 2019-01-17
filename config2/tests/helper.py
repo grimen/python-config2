@@ -23,9 +23,9 @@ from pygments import highlight, lexers, formatters
 
 from deepdiff import DeepDiff
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 from six import PY2, PY3, string_types
 

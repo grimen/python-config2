@@ -13,10 +13,9 @@ from pprint import pprint
 
 from deepmerge import Merger
 
-from easypackage.syspath import syspath
-from easypackage.root import root as detect_root_path
+import rootpath
 
-syspath()
+rootpath.append()
 
 from attributedict.collections import AttributeDict
 
@@ -118,7 +117,8 @@ class Config(AttributeDict):
             else:
                 detect_root_pattern = detect
 
-            root_path = detect_root_path(path, detect_root_pattern) or os.getcwd()
+            root_path = rootpath.detect(path, detect_root_pattern)
+            root_path = root_path or os.getcwd()
 
         else:
             root_path = path

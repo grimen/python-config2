@@ -22,7 +22,7 @@ all: test
 
 .PHONY: clean
 clean:
-	CLEAR_PATTERNS='*.pyc __pycache__ build dist *.egg-info .tox'; \
+	CLEAR_PATTERNS='*.pyc __pycache__ build dist *.egg-info .eggs .tox'; \
 	for PATTERN in $$CLEAR_PATTERNS; do \
 		echo "rm -rf \$$(find $$PWD -name $$PATTERN)"; \
 		rm -rf $$(find $$PWD -name $$PATTERN); \
