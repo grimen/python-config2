@@ -23,6 +23,8 @@ from pygments import highlight, lexers, formatters
 
 from deepdiff import DeepDiff
 
+from attributedict.collections import AttributeDict
+
 import rootpath
 
 rootpath.append()
@@ -166,47 +168,53 @@ def fixture(relative_file_path, *args, **kvargs):
 def json_encode(data = None):
     return json.dumps(data, default = lambda x: repr(x)).replace(' ', '')
 
-def assertModule(result, expression):
-    is_string = isinstance(result.__file__, string_types)
+def assertModule(actual, expression):
+    is_string = isinstance(actual.__file__, string_types)
 
     if not is_string:
-        raise AssertionError('module path `{0}` expected to be a string - {1}'.format(result, expression and '- {0}'.format(expression) or ''))
+        raise AssertionError('module path `{0}` expected to be a string - {1}'.format(actual, expression and '- {0}'.format(expression) or ''))
 
-    module_file_path = result.__file__
+    module_file_path = actual.__file__
 
     is_source_file = (module_file_path.find('/{0}'.format(PACKAGE_SOURCE_DIRECTORY)) > -1) # ensure module is loaded from `src`
 
     if not is_source_file:
         raise AssertionError('module path `{0}` expected to include `{1}` {2}'.format(module_file_path, PACKAGE_SOURCE_DIRECTORY, expression and '- {0}'.format(expression) or ''))
 
-    module_type = type(result)
+    module_type = type(actual)
 
     is_module = (module_type == types.ModuleType)
 
     if not is_module:
         raise AssertionError('module `{0}` expected to include `{1}` {2}'.format(module_file_path, PACKAGE_SOURCE_DIRECTORY, expression and '- {0}'.format(expression) or ''))
 
-def assertDeepEqual(result, expected, expression = None, exclude_types = None):
-    # HACK: `deepdiff` works differently on Python 2 vs Python 3 :'(
-    # result = json.loads(json.dumps(result, default = lambda x: repr(x)))
-    # expected = json.loads(json.dumps(expected, default = lambda x: repr(x)))
+def assertDeepEqual(actual, expected, expression = None, exclude_types = None):
+    # if isinstance(actual, map):
+    #     actual = list(actual)
 
-    diff = deepdiff(result, expected, exclude_types = exclude_types)
+    # if isinstance(expected, map):
+    #     expected = list(expected)
+
+    # if isinstance(actual, AttributeDict):
+    #     actual = dict(actual.copy().__dict__)
+
+    # if isinstance(expected, AttributeDict):
+    #     expected = dict(expected.copy().__dict__)
+
+    # print('\nACTUAL', type(actual), '\nEXPECTED', type(expected))
+
+    diff = deepdiff(actual, expected, exclude_types = exclude_types)
 
     if diff != {}:
-        raise AssertionError('\n\n%s\nshould deep equal\n\n%s\ndiff:\n\n%s' % (pretty(result), pretty(expected), pretty(diff)))
+        raise AssertionError('\n\n%s\nshould deep equal\n\n%s\ndiff:\n\n%s' % (pretty(actual), pretty(expected), pretty(diff)))
 
     return True
 
-def assertNotDeepEqual(result, expected, expression = None, exclude_types = None):
-    # HACK: `deepdiff` works differently on Python 2 vs Python 3 :'(
-    # result = json.loads(json.dumps(result, default = lambda x: repr(x)))
-    # expected = json.loads(json.dumps(expected, default = lambda x: repr(x)))
-
-    diff = deepdiff(result, expected, exclude_types = exclude_types)
+def assertNotDeepEqual(actual, expected, expression = None, exclude_types = None):
+    diff = deepdiff(actual, expected, exclude_types = exclude_types)
 
     if diff == {}:
-        raise AssertionError('\n\n%s\nshould deep equal\n\n%s\ndiff:\n\n%s' % (pretty(result), pretty(expected), pretty(diff)))
+        raise AssertionError('\n\n%s\nshould deep equal\n\n%s\ndiff:\n\n%s' % (pretty(actual), pretty(expected), pretty(diff)))
 
     return True
 

@@ -6,6 +6,7 @@
 import sys
 import os
 import logging
+import inspect
 
 from os import environ as env
 from os import path, listdir
@@ -100,7 +101,7 @@ class Config(AttributeDict):
         config_path = None,
         config_directory_name = None,
         logger = False,
-        detect = False,
+        detect = True,
         silent = True,
     ):
         if isinstance(env, string_types):
@@ -109,15 +110,41 @@ class Config(AttributeDict):
                 env = None
 
         env = env or DEFAULT_ENV
-        path = path or os.getcwd()
+        # env = env or Config.detect_env(DEFAULT_ENV_KEYS, DEFAULT_ENV)
+
+        if not path:
+            try:
+                this_file_path = os.path.abspath(__file__)
+
+                for frame in inspect.stack():
+                    caller_file_path = os.path.abspath(frame.filename)
+
+                    is_not_this_file = (frame.filename != this_file_path)
+                    is_not_importlib = not ('frozen importlib' in frame.filename) # Python `import <module>`, etc.
+                    is_caller_file = is_not_this_file and is_not_importlib
+
+                    if is_caller_file:
+                        path = os.path.dirname(frame.filename)
+
+                        break
+
+            except:
+                path = os.getcwd()
+
+        path = os.path.abspath(path)
 
         if detect:
-            if not isinstance(detect, string_types):
-                detect_root_pattern = DEFAULT_ROOT_DETECT_FILE_PATTERN
-            else:
+            if isinstance(detect, string_types):
                 detect_root_pattern = detect
 
+            elif isinstance(detect, (tuple, list)):
+                detect_root_pattern = detect.join('|')
+
+            else:
+                detect_root_pattern = DEFAULT_ROOT_DETECT_FILE_PATTERN
+
             root_path = rootpath.detect(path, detect_root_pattern)
+
             root_path = root_path or os.getcwd()
 
         else:
@@ -125,7 +152,6 @@ class Config(AttributeDict):
 
         config_directory_name = config_directory_name or DEFAULT_CONFIG_DIRECTORY_NAME # TODO: log warning if `config_path` used, means `config_directory_name` is ignored
         config_path = config_path or os.path.join(root_path, config_directory_name)
-
 
         if logger == False:
             logger = logger or self.__class__.logger('base')
@@ -296,44 +322,49 @@ class Config(AttributeDict):
     def detect_files(config_path):
         config_files = []
 
-        for config_file_name in listdir(config_path):
-            config_file_path = path.join(config_path, config_file_name)
-            config_file_name_parts = dict(enumerate(config_file_name.split('.')))
-            config_file_basename = config_file_name_parts.get(0, None)
-            config_file_extension = config_file_name_parts.get(1, None)
+        try:
+            for config_file_name in listdir(config_path):
+                config_file_path = path.join(config_path, config_file_name)
+                config_file_name_parts = dict(enumerate(config_file_name.split('.')))
+                config_file_basename = config_file_name_parts.get(0, None)
+                config_file_extension = config_file_name_parts.get(1, None)
 
-            is_valid_config_file_extension = (config_file_extension in DEFAULT_CONFIG_FORMAT_EXTENSIONS.keys())
+                is_valid_config_file_extension = (config_file_extension in DEFAULT_CONFIG_FORMAT_EXTENSIONS.keys())
 
-            if is_valid_config_file_extension:
-                config_files.append(AttributeDict({
-                    'basename': config_file_basename,
-                    'path': config_file_path,
-                    'name': config_file_name,
-                    'extension': config_file_extension,
-                    'format': DEFAULT_CONFIG_FORMAT_EXTENSIONS.get(config_file_extension, None)
-                }))
+                if is_valid_config_file_extension:
+                    config_files.append(AttributeDict({
+                        'basename': config_file_basename,
+                        'path': config_file_path,
+                        'name': config_file_name,
+                        'extension': config_file_extension,
+                        'format': DEFAULT_CONFIG_FORMAT_EXTENSIONS.get(config_file_extension, None)
+                    }))
+
+        except FileNotFoundError:
+            pass
 
         return config_files
 
     @staticmethod
     def load_file(config_file):
-        config_file = config_file or {}
+        config_file = config_file or {} # AttributeDict({})
 
         try:
-            with open(config_file.path) as file:
-                try:
-                    config_file.raw = file.read()
+            if hasattr(config_file, 'path') and config_file['path']:
+                with open(config_file.path) as file:
+                    try:
+                        config_file.raw = file.read()
 
-                except IOError as error:
-                    raise ConfigError('Tried but failed to `read` detected config file `{path}`.'.format(**config_file))
+                    except IOError as error:
+                        raise ConfigError('Tried but failed to `read` detected config file `{path}`.'.format(**config_file))
 
-                try:
-                    serializer = DEFAULT_CONFIG_SERIALIZERS[config_file.format]
+                    try:
+                        serializer = DEFAULT_CONFIG_SERIALIZERS[config_file.format]
 
-                    config_file.data = serializer.unpack(config_file.raw)
+                        config_file.data = serializer.unpack(config_file.raw)
 
-                except Exception as error:
-                    raise ConfigError('Tried but failed to `unpack` (de-serialize) detected config file `{path}` using serializer `{format}`.'.format(**config_file))
+                    except Exception as error:
+                        raise ConfigError('Tried but failed to `unpack` (de-serialize) detected config file `{path}` using serializer `{format}`.'.format(**config_file))
 
         except AttributeError as error:
             raise ConfigError('Tried but failed to `load` detected config file.'.format(**config_file) + ' Reason: {}'.format(error))
@@ -419,16 +450,4 @@ try:
     config = Config.create()
 
 except Exception as error:
-    pass
-
-
-# =========================================
-#       MAIN
-# --------------------------------------
-
-if __name__ == '__main__':
-
-    from easypackage.utils.banner import banner
-
-    with banner('CONFIG'):
-        pass
+    print('WARN: {0}'.format(error))
