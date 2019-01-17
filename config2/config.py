@@ -66,7 +66,7 @@ DEFAULT_CONFIG_RESERVED_FILE_BASENAMES = [
     DEFAULT_CONFIG_CUSTOM_ENV_FILE_BASENAME,
 ]
 
-DEFAULT_ROOT_DETECT_FILE_PATTERN = '.git|requirements.txt|setup.py'
+DEFAULT_ROOT_DETECT_FILE_PATTERN = '^.git|requirements.txt|setup.py|config$'
 
 # REVIEW: https://github.com/lorenwest/node-config/wiki/Environment-Variables
 
