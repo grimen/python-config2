@@ -142,7 +142,9 @@ config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['DEV 1'], '
 config.a1 # => 'DEFAULT 1'
 config.a2 # => {'b1': [1, 2, 3], 'b2': ['DEV 1'], 'b3': {'c1': 1, 'c2': 'DEV 2'}}
 config.a2.b3.c2 # => 'DEV was here 2'
+
 config.some_key_only_for_dev # => True
+
 config.some_key_only_for_foo # => AttributeError
 config.some_key_only_for_prod # => AttributeError
 
@@ -160,7 +162,9 @@ config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['FOO 1'], '
 config.a1 # => 'DEFAULT 1'
 config.a2 # => {'b1': [1, 2, 3], 'b2': ['FOO 1'], 'b3': {'c1': 1, 'c2': 'FOO 2'}}
 config.a2.b3.c2 # => 'FOO was here 2'
+
 config.key_only_for_foo # => True
+
 config.some_key_only_for_dev # => AttributeError
 config.some_key_only_for_prod # => AttributeError
 
@@ -178,7 +182,9 @@ config.get() # => {'a1': 'DEFAULT 1', 'a2': {'b1': [1, 2, 3], 'b2': ['PROD 1'], 
 config.a1 # => 'DEFAULT 1'
 config.a2 # => {'b1': [1, 2, 3], 'b2': ['PROD 1'], 'b3': {'c1': 1, 'c2': 'PROD 2'}}
 config.a2.b3.c2 # => 'PROD was here 2'
+
 config.some_key_only_for_prod # => True
+
 config.some_key_only_for_dev # => AttributeError
 config.some_key_only_for_foo # => AttributeError
 
