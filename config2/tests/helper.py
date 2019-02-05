@@ -3,15 +3,19 @@
 #       DEPS
 # --------------------------------------
 
+import rootpath
+
+rootpath.append()
+
 import sys
 import os
 import inspect
 import unittest
 import json
-import inspect
 import pprint
 import types
 import logging
+import inspecta
 
 from os import path, environ
 try:
@@ -19,15 +23,10 @@ try:
     from colour_runner.result import ColourTextTestResult
 except:
     pass
-from pygments import highlight, lexers, formatters
 
 from deepdiff import DeepDiff
 
 from attributedict.collections import AttributeDict
-
-import rootpath
-
-rootpath.append()
 
 from six import PY2, PY3, string_types
 
@@ -107,9 +106,16 @@ def run(test):
 
     # NOTE on `tox` (2/2): ran into issues with `tox` raising `ncurses` error, so disabling colors when running in `tox` for now
     if 'ColourTextTestResult' in globals():
-        result = unittest.runner.TextTestRunner(verbosity = 2, resultclass = ColourTextTestResult).run(_suite)
+        result = unittest.runner.TextTestRunner(
+            verbosity = 2,
+            failfast = True,
+            resultclass = ColourTextTestResult,
+        ).run(_suite)
     else:
-        result = unittest.runner.TextTestRunner(verbosity = 2).run(_suite)
+        result = unittest.runner.TextTestRunner(
+            verbosity = 2,
+            failfast = True,
+        ).run(_suite)
 
     succesful = not result.wasSuccessful()
     exit_code = int(succesful)
@@ -144,10 +150,7 @@ def deepdiff(a, b, exclude_types = None):
     return DeepDiff(a, b, ignore_order = True, report_repetition = True, exclude_types = exclude_types)
 
 def pretty(data):
-    result = pprint.pformat(data, indent = 4, depth = None)
-    result = highlight(result, lexers.PythonLexer(), formatters.TerminalFormatter())
-
-    return result
+    return inspecta.inspect(data, indent = 4, depth = None)
 
 def root_path(*args):
     return ROOT_PATH
@@ -189,20 +192,6 @@ def assertModule(actual, expression):
         raise AssertionError('module `{0}` expected to include `{1}` {2}'.format(module_file_path, PACKAGE_SOURCE_DIRECTORY, expression and '- {0}'.format(expression) or ''))
 
 def assertDeepEqual(actual, expected, expression = None, exclude_types = None):
-    # if isinstance(actual, map):
-    #     actual = list(actual)
-
-    # if isinstance(expected, map):
-    #     expected = list(expected)
-
-    # if isinstance(actual, AttributeDict):
-    #     actual = dict(actual.copy().__dict__)
-
-    # if isinstance(expected, AttributeDict):
-    #     expected = dict(expected.copy().__dict__)
-
-    # print('\nACTUAL', type(actual), '\nEXPECTED', type(expected))
-
     diff = deepdiff(actual, expected, exclude_types = exclude_types)
 
     if diff != {}:

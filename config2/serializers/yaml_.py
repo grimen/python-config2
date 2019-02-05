@@ -7,10 +7,10 @@ import rootpath
 
 rootpath.append()
 
-import yaml
 import re
+import yaml
 
-from config2.compat import string_types
+from six import string_types
 
 
 # =========================================

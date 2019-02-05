@@ -3,14 +3,14 @@
 #       DEPS
 # --------------------------------------
 
+import rootpath
+
+rootpath.append()
+
 import json
 
 from os import path
 from os import environ as env
-
-import rootpath
-
-rootpath.append()
 
 from attributedict.collections import AttributeDict
 

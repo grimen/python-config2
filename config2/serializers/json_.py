@@ -7,10 +7,10 @@ import rootpath
 
 rootpath.append()
 
-import json
 import re
+import json
 
-from config2.compat import string_types
+from six import string_types
 
 
 # =========================================

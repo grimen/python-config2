@@ -8,6 +8,9 @@ BRANCH := $(shell git for-each-ref --format='%(objectname) %(refname:short)' ref
 HASH := $(shell git rev-parse HEAD)
 DATETIME := $(shell date | sed 's/ /./g')
 
+PYTHON_2_VERSION := '2.7.13'
+PYTHON_3_VERSION := '3.7.0'
+
 
 # =========================================
 #       default
@@ -126,6 +129,7 @@ env-create-python2:
 	eval "$$(pyenv virtualenv-init -)" && \
 	pyenv virtualenv -f $(PYTHON_2_VERSION) $(NAME)-python2 && \
 	pyenv activate $(NAME)-python2 && \
+	pip install --upgrade pip && \
 	pip install -U -r requirements.txt && \
 	pyenv versions | grep --color=always $(NAME)-python
 
@@ -135,6 +139,7 @@ env-create-python3:
 	eval "$$(pyenv virtualenv-init -)" && \
 	pyenv virtualenv -f $(PYTHON_3_VERSION) $(NAME)-python3 && \
 	pyenv activate $(NAME)-python3 && \
+	pip install --upgrade pip && \
 	pip install -U -r requirements.txt && \
 	pyenv versions | grep --color=always $(NAME)-python
 

@@ -3,9 +3,9 @@
 #       DEPS
 # --------------------------------------
 
-from easypackage.syspath import syspath
+import rootpath
 
-syspath()
+rootpath.append()
 
 from config2.tests import helper
 

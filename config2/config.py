@@ -3,24 +3,24 @@
 #       DEPS
 # --------------------------------------
 
-import sys
-import os
-import logging
-import inspect
-
-from os import environ as env
-from os import path, listdir
-from pprint import pprint
-
-from deepmerge import Merger
-
 import rootpath
 
 rootpath.append()
 
+import sys
+import os
+import logging
+import inspect
+import mybad
+
+from os import environ as env
+from os import path, listdir
+
+from deepmerge import Merger
+
 from attributedict.collections import AttributeDict
 
-from config2.compat import string_types
+from six import string_types
 
 from config2.serializers import json_ as json
 from config2.serializers import yaml_ as yaml
@@ -85,7 +85,7 @@ DISABLED = 1000 # NOTE: no easy way of disable Python standard logger instance w
 #       Errors
 # --------------------------------------
 
-class ConfigError(Exception):
+class ConfigError(mybad.Error):
     pass
 
 

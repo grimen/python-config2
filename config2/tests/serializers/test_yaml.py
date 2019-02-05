@@ -3,16 +3,16 @@
 #       DEPS
 # --------------------------------------
 
-import types
-
-from os import path
-
 import rootpath
 
 rootpath.append()
 
+import types
+
+from os import path
+from six import string_types
+
 from config2.tests import helper
-from config2.compat import string_types
 
 from config2.serializers import yaml_ as yaml
 

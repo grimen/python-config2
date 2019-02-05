@@ -1,5 +1,7 @@
 rootpath >= 0.1.0
 attributedict >= 0.2.0
+inspecta >= 0.1.0
+mybad >= 0.1.0
 deepmerge >= 0.0.4
 pyyaml >= 3.12
 six >= 1.11.0

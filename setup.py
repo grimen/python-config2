@@ -64,36 +64,38 @@ def get_requirements():
 #       MAIN
 # --------------------------------------
 
+name = 'config2'
+description = 'Python application configuration - highly inspired by `node-config`.'
+keywords = [
+    'config',
+    'configuration',
+    'configurations',
+    'settings',
+    'env',
+    'environment',
+    'environments',
+    'application',
+    'node-config',
+    'python-config',
+]
+
 readme = get_readme()
 requirements = get_requirements()
 packages = setuptools.find_packages()
-data_files = find_data_files(['*.*'], os.path.join('config2', 'tests', '__fixtures__'))
+data_files = find_data_files(['*.*'], os.path.join(name, 'tests', '__fixtures__'))
 
 config = {
-    'name': 'config2',
-    'version': '0.3.0',
-    'description': (
-        'Python application configuration - highly inspired by `node-config`.'
-    ),
-    'keywords': [
-        'config',
-        'configuration',
-        'configurations',
-        'settings',
-        'env',
-        'environment',
-        'environments',
-        'application',
-        'node-config',
-        'python-config',
-    ],
+    'name': name,
+    'version': version,
+    'description': (description),
+    'keywords': keywords,
     'author': 'Jonas Grimfelt',
     'author_email': 'grimen@gmail.com',
-    'url': 'https://github.com/grimen/python-config2',
-    'download_url': 'https://github.com/grimen/python-config2',
+    'url': 'https://github.com/grimen/python-{name}'.format(name = name),
+    'download_url': 'https://github.com/grimen/python-{name}'.format(name = name),
     'project_urls': {
-        'repository': 'https://github.com/grimen/python-config2',
-        'bugs': 'https://github.com/grimen/python-config2/issues',
+        'repository': 'https://github.com/grimen/python-{name}'.format(name = name),
+        'bugs': 'https://github.com/grimen/python-{name}/issues'.format(name = name),
     },
     'license': 'MIT',
 
@@ -108,23 +110,21 @@ config = {
         'Operating System :: POSIX',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
 
     'packages': packages,
     'package_dir': {
-        'config2': 'config2',
+        name: name,
     },
     'package_data': {
         '': [
             'MIT-LICENSE',
             'README.md',
         ],
-        'config2': [
+        name: [
             '*.*',
         ],
     },
@@ -133,7 +133,9 @@ config = {
     'zip_safe': True,
 
     'install_requires': requirements,
-    'setup_requires': ['setuptools_git >= 1.2'],
+    'setup_requires': [
+        'setuptools_git >= 1.2',
+    ],
 }
 
 setuptools.setup(**config)
