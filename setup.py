@@ -65,6 +65,7 @@ def get_requirements():
 # --------------------------------------
 
 name = 'config2'
+version = '0.3.0'
 description = 'Python application configuration - highly inspired by `node-config`.'
 keywords = [
     'config',
