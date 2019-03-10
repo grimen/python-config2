@@ -134,6 +134,7 @@ class Config(AttributeDict):
                         break
 
             except Exception as error:
+                print('DEBUG `path` resolve issue', error)
                 path = os.getcwd()
 
         path = os.path.abspath(path)
