@@ -114,7 +114,7 @@ class Config(AttributeDict):
 
         if not path:
             try:
-                this_file_path = os.path.abspath(__file__)
+                this_file_path = os.path.abspath(__file__).replace('.pyc', '.py')
 
                 if PY2:
                     frames = [
