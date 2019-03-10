@@ -112,8 +112,6 @@ class Config(AttributeDict):
         env = env or DEFAULT_ENV
         # env = env or Config.detect_env(DEFAULT_ENV_KEYS, DEFAULT_ENV)
 
-        print('DEBUG #0', path)
-
         if not path:
             try:
                 this_file_path = os.path.abspath(__file__)
@@ -140,7 +138,7 @@ class Config(AttributeDict):
                     if is_caller_file:
                         path = os.path.dirname(frame.filename)
 
-                        print('DEBUG #1', path, frame.filename, filenames)
+                        print('DEBUG #1', path, frame.filename, filenames, this_file_path)
 
                         sys.stdout.flush()
 
