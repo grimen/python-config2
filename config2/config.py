@@ -118,6 +118,8 @@ class Config(AttributeDict):
             try:
                 this_file_path = os.path.abspath(__file__)
 
+                frames = list(inspect.stack())
+
                 for frame in inspect.stack():
                     frame_filename = None
 
@@ -133,7 +135,7 @@ class Config(AttributeDict):
                     if is_caller_file:
                         path = os.path.dirname(frame.filename)
 
-                        print('DEBUG #1', path, frame.filename)
+                        print('DEBUG #1', path, frame.filename, frames)
 
                         break
 
