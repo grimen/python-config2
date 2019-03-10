@@ -130,6 +130,10 @@ coverage-ci-codecov:
 #       environment (pyenv)
 # --------------------------------------
 
+.PHONY: env-uninstall
+env-uninstall:
+	rm -rf "$$(HOME)/.pyenv"
+
 .PHONY: env-install
 env-install:
 	curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
