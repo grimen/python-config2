@@ -97,8 +97,8 @@ test-tox:
 	tox
 
 .PHONY: test-ci
-test-ci: test-system coverage-ci
-# test-ci: test-tox coverage-ci
+test-ci:
+	coverage run ./$(NAME)/tests
 
 .PHONY: testimport
 testimport:
