@@ -94,7 +94,7 @@ test-tox:
 	tox
 
 .PHONY: test-ci
-test-ci: test-tox
+test-ci: test-tox coverage-ci
 
 .PHONY: testimport
 testimport:
@@ -102,6 +102,27 @@ testimport:
 	pip install -U . && \
 	python -c "import $(NAME); print('$(NAME)', $(NAME))" && \
 	echo "OK"
+
+
+# =========================================
+#       coverage (codecov)
+# --------------------------------------
+
+.PHONY: coverage
+coverage: clean env3
+	coverage run ./$(NAME)/tests
+
+.PHONY: coverage-codecov
+coverage-codecov: coverage
+	bash <(curl -s https://codecov.io/bash)
+
+.PHONY: coverage-ci
+coverage-ci:
+	coverage run ./$(NAME)/tests
+
+.PHONY: coverage-ci-codecov
+coverage-ci-codecov:
+	bash <(curl -s https://codecov.io/bash)
 
 
 # =========================================
