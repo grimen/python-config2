@@ -133,7 +133,7 @@ class Config(AttributeDict):
                     if is_caller_file:
                         path = os.path.dirname(frame.filename)
 
-                        print('DEBUG #1', path)
+                        print('DEBUG #1', path, frame.filename)
 
                         break
 
