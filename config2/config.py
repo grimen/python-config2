@@ -20,7 +20,7 @@ from deepmerge import Merger
 
 from attributedict.collections import AttributeDict
 
-from six import string_types
+from six import PY2, string_types
 
 from config2.serializers import json_ as json
 from config2.serializers import yaml_ as yaml
@@ -117,6 +117,11 @@ class Config(AttributeDict):
                 this_file_path = os.path.abspath(__file__)
 
                 for frame in inspect.stack():
+                    frame_filename = None
+
+                    if PY2:
+                        frame = inspect.getframeinfo(frame[0])
+
                     caller_file_path = os.path.abspath(frame.filename)
 
                     is_not_this_file = (frame.filename != this_file_path)
@@ -128,7 +133,7 @@ class Config(AttributeDict):
 
                         break
 
-            except:
+            except Exception as error:
                 path = os.getcwd()
 
         path = os.path.abspath(path)
@@ -159,7 +164,7 @@ class Config(AttributeDict):
         else:
             logger = logger or self.__class__.logger('base')
 
-        self.__config_data__ = None
+        self.__config_data__ = {}
         self.__config_directory_name__ = config_directory_name
         self.__config_files__ = []
         self.__config_path__ = config_path
@@ -269,7 +274,7 @@ class Config(AttributeDict):
                         raise error
 
             config_datas = map((lambda _config_file:
-                _config_file and _config_file.data and _config_file.data.copy()
+                _config_file and _config_file.data and _config_file.data.copy() or {}
             ), config_files)
             config_datas = list(config_datas)
 
