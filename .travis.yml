@@ -5,6 +5,7 @@ python:
     - "3.7-dev"
 install:
     - make install-ci
+    - make env-install
     - make env-create
 script: make test-ci
 after_success:
