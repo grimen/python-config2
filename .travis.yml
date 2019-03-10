@@ -3,7 +3,9 @@ python:
     - "2.7"
     - "3.6"
     - "3.7-dev"
-install: make install-ci
+install:
+    - make install-ci
+    - make env-create
 script: make test-ci
 after_success:
     - make coverage-ci-codecov

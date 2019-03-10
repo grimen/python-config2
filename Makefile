@@ -94,7 +94,8 @@ test-tox:
 	tox
 
 .PHONY: test-ci
-test-ci: test-tox coverage-ci
+test-ci: test coverage-ci
+# test-ci: test-tox coverage-ci
 
 .PHONY: testimport
 testimport:
