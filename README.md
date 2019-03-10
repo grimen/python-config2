@@ -1,5 +1,5 @@
 
-# Config2 [![PyPI version](https://badge.fury.io/py/config2.svg)](https://badge.fury.io/py/config2) [![Build Status](https://travis-ci.com/grimen/python-config2.svg?branch=master)](https://travis-ci.com/grimen/python-config2) [![Coverage Status](https://codecov.io/gh/grimen/python-config2/branch/master/graph/badge.svg)](https://codecov.io/gh/grimen/python-config2)
+# `config2` [![PyPI version](https://badge.fury.io/py/config2.svg)](https://badge.fury.io/py/config2) [![Build Status](https://travis-ci.com/grimen/python-config2.svg?branch=master)](https://travis-ci.com/grimen/python-config2) [![Coverage Status](https://codecov.io/gh/grimen/python-config2/branch/master/graph/badge.svg)](https://codecov.io/gh/grimen/python-config2)
 
 *Python environment configuration simplified.*
 
