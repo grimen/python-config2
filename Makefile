@@ -77,6 +77,9 @@ dist-dev: build
 .PHONY: test
 test: test-python2 test-python3
 
+test-system: clean
+	python ./$(NAME)/tests
+
 test-python2: clean env2
 	eval "$$(pyenv init -)" && \
 	eval "$$(pyenv virtualenv-init -)" && \
@@ -94,7 +97,7 @@ test-tox:
 	tox
 
 .PHONY: test-ci
-test-ci: test coverage-ci
+test-ci: test-system coverage-ci
 # test-ci: test-tox coverage-ci
 
 .PHONY: testimport
