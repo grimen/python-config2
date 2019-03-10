@@ -118,14 +118,19 @@ class Config(AttributeDict):
             try:
                 this_file_path = os.path.abspath(__file__)
 
-                frames = list(inspect.stack())
+                if PY2:
+                    frames = [
+                        inspect.getframeinfo(frame[0]) for frame in inspect.stack()
+                    ]
 
-                for frame in inspect.stack():
-                    frame_filename = None
+                else:
+                    frames = list(inspect.stack())
 
-                    if PY2:
-                        frame = inspect.getframeinfo(frame[0])
+                filenames = [
+                    frame.filename for frame in frames
+                ]
 
+                for frame in frames:
                     caller_file_path = os.path.abspath(frame.filename)
 
                     is_not_this_file = (frame.filename != this_file_path)
@@ -135,7 +140,9 @@ class Config(AttributeDict):
                     if is_caller_file:
                         path = os.path.dirname(frame.filename)
 
-                        print('DEBUG #1', path, frame.filename, frames)
+                        print('DEBUG #1', path, frame.filename, filenames)
+
+                        sys.stdout.flush()
 
                         break
 
