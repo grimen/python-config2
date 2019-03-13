@@ -1,3 +1,4 @@
+setupextras >= 0.1.5
 rootpath >= 0.1.0
 attributedict >= 0.2.0
 inspecta >= 0.1.0
