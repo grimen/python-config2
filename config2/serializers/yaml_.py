@@ -9,6 +9,7 @@ rootpath.append()
 
 import re
 import yaml
+import sys
 
 from six import string_types
 
@@ -16,7 +17,7 @@ from six import string_types
 # =========================================
 #       CONSTANTS
 # --------------------------------------
-
+PYTHON_VERSION = sys.version_info[0]
 DEFAULT_YAML_INDENT = 4
 DEFAULT_YAML_TEST_PATTERN = r'[\n\t\s]*[^\[\]\{\}]+[\d\w\W]*\:[\n\t\s]*[\d\w\W]+' # NOTE: very greedy/naive for now
 
@@ -48,7 +49,10 @@ def unpack(value):
         if value is None:
             return None
 
-        result = yaml.load(value, Loader=yaml.FullLoader)
+        if PYTHON_VERSION < 3:
+            result = yaml.load(value)
+        else:
+            result = yaml.load(value, Loader=yaml.FullLoader)
 
         return result
 
