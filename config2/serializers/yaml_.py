@@ -48,7 +48,7 @@ def unpack(value):
         if value is None:
             return None
 
-        result = yaml.load(value)
+        result = yaml.load(value, Loader=yaml.FullLoader)
 
         return result
 
