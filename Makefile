@@ -44,7 +44,7 @@ install:
 .PHONY: install-ci
 install-ci:
 	PYTHON_USER_FLAG=$(shell python -c "import sys; print('' if hasattr(sys, 'real_prefix') or hasattr(sys, 'base_prefix') else '--user')") && \
-	pip install $(PYTHON_USER_FLAG) -U setuptools setuptools-git tox tox-travis && \
+	pip install $(PYTHON_USER_FLAG) -U setuptools setuptools-git setupextras tox tox-travis && \
 	pip install $(PYTHON_USER_FLAG) -r requirements.txt
 
 
