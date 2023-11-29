@@ -22,7 +22,7 @@ This gives your application a consistent configuration interface shared among a 
 ...based on [`node-config`](https://github.com/lorenwest/node-config) project guidelines:
 
 - *Simple* - Get started fast
-- ~~*Powerful* - For multi-node enterprise deployment~~ - excluded because [with power comes responsability](https://en.wikipedia.org/wiki/Principle_of_least_astonishment)
+- ~~*Powerful* - For multi-node enterprise deployment~~ - excluded because [with power comes responsibility](https://en.wikipedia.org/wiki/Principle_of_least_astonishment)
 - *Flexible* - Supporting multiple config file formats
 - *Lightweight* - Small file and memory footprint
 - *Predictable* - Well tested foundation for module and app developers
